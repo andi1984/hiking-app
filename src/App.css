@@ -1,11 +1,65 @@
 html,
-body {
+body,
+App {
   width: 100vw;
   height: 100vh;
   margin: 0;
 }
 
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 800px) {
+  .App {
+    flex-direction: row;
+  }
+}
+
+aside {
+  order: 1;
+}
+
+.map,
+aside {
+  width: 100%;
+}
+
+aside {
+  flex-basis: 25vh;
+  background-color: brown;
+  flex-grow: 0;
+  flex-shrink: 1;
+
+  background-color: #383838;
+  color: white;
+}
+
 .map {
-  width: 100vw;
-  height: 100vh;
+  display: block;
+  flex-basis: 75vh;
+  height: 0; /* Why do I need this in Chromium-based browsers? Flexbug? */
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+@media screen and (min-width: 800px) {
+  aside {
+    order: initial;
+  }
+
+  aside,
+  .map {
+    width: auto;
+    height: 100vh;
+  }
+
+  aside {
+    flex-basis: 25vw;
+  }
+
+  .map {
+    flex-basis: 75vw;
+  }
 }
