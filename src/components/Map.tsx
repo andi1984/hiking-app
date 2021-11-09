@@ -7,7 +7,7 @@ import XYZ from "ol/source/XYZ";
 import VectorSource from "ol/source/Vector";
 import Geometry from "ol/geom/Geometry";
 
-import { Map as MapType, MapBrowserEvent } from "ol";
+import { MapBrowserEvent } from "ol";
 import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 
 import { route2Features } from "../helper";
