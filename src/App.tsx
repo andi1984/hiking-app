@@ -1,40 +1,12 @@
-import {
-  DndContext,
-  DragEndEvent,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  useSortable,
-  arrayMove,
-  sortableKeyboardCoordinates,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-
 import "./App.css";
 
 import Map from "./components/Map";
-import { useState, useCallback, ReactElement } from "react";
+import { useState, useCallback } from "react";
+import SortableList from "./components/SortableList";
 
-const SortableItem = (props: { id: string; children: ReactElement }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <li ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {props.children}
-    </li>
-  );
-};
+import { point2Id } from "./helper";
+import { DragEndEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 
 function App() {
   const [track, setTrack] = useState<number[][]>([]);
@@ -42,17 +14,6 @@ function App() {
   const onMapClick = useCallback((event: any) => {
     setTrack((prevTrack) => [...prevTrack, event.coordinate]);
   }, []);
-
-  const point2Id = (point: number[]) => point.toString();
-
-  const trackIds = track.map((point) => point2Id(point));
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -75,19 +36,7 @@ function App() {
     <div className="App">
       <>
         <aside>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext items={trackIds}>
-              {track.map((value, index) => (
-                <SortableItem key={value.toString()} id={value.toString()}>
-                  <span>Waypoint {index + 1}</span>
-                </SortableItem>
-              ))}
-            </SortableContext>
-          </DndContext>
+          <SortableList track={track} onDragEnd={handleDragEnd} />
         </aside>
         <Map onMapClick={onMapClick} track={track} />
       </>

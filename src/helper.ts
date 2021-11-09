@@ -52,4 +52,4 @@ const _route2Features = (route: number[][]): Feature<Geometry>[] => {
 
 export const route2Features = memoize(_route2Features);
 
-//export const route2Features = _route2Features;
+export const point2Id = (point: number[]) => point.toString();
