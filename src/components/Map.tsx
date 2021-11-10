@@ -7,8 +7,8 @@ import XYZ from "ol/source/XYZ";
 import VectorSource from "ol/source/Vector";
 import Geometry from "ol/geom/Geometry";
 
-import { MapBrowserEvent } from "ol";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+import { MapBrowserEvent, Feature } from "ol";
+import { Circle as CircleStyle, Fill, Stroke, Style, Text } from "ol/style";
 
 import { route2Features } from "../helper";
 
@@ -19,23 +19,31 @@ import { route2Features } from "../helper";
  * - Redraw the lines between the markers (in order!) whenever they change
  * - Idea is having two different vector layers. One for the POI markers and one for the drawing line between them
  **/
-const vectorLayerStyle = {
-  route: new Style({
-    stroke: new Stroke({
-      width: 6,
-      color: [237, 212, 0, 0.8],
-    }),
-  }),
-  icon: new Style({
-    image: new CircleStyle({
-      radius: 5,
-      fill: new Fill({ color: "black" }),
-      stroke: new Stroke({
-        color: "white",
-        width: 2,
-      }),
-    }),
-  }),
+const vectorLayerStyle = (feature: Feature<Geometry>) => {
+  const featureType = feature.get("type") as keyof typeof vectorLayerStyle;
+
+  switch (featureType) {
+    case "route":
+      return new Style({
+        stroke: new Stroke({
+          width: 6,
+          color: [75, 134, 232, 1],
+        }),
+      });
+    case "icon":
+      return new Style({
+        image: new CircleStyle({
+          radius: 10,
+          fill: new Fill({ color: "black" }),
+        }),
+        text: new Text({
+          text: feature.get("label"),
+          fill: new Fill({ color: "white" }),
+        }),
+      });
+    default:
+      return new Style({});
+  }
 };
 
 const Map: FC<{
@@ -68,10 +76,11 @@ const Map: FC<{
 
       const vectorLayer = new VectorLayer({
         source: new VectorSource({ wrapX: false, features: [] }),
-        style: function (feature) {
-          const featureType: keyof typeof vectorLayerStyle =
-            feature.get("type");
-          return vectorLayerStyle[featureType];
+        style: function () {
+          return vectorLayerStyle.apply(
+            null,
+            arguments as unknown as [Feature<Geometry>]
+          );
         },
       });
 

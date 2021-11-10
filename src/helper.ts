@@ -5,15 +5,17 @@ import LineString from "ol/geom/LineString";
 
 import memoize from "lodash.memoize";
 
-const _point2Features = (point?: number[], previousPoint?: number[]) => {
-  if (!point) {
-    return [];
-  }
-
+const _point2Features = (
+  point: number[],
+  label: string,
+  previousPoint?: number[]
+) => {
   let addedFeatures = [];
 
   // ADD POINT MARKER
-  addedFeatures.push(new Feature({ type: "icon", geometry: new Point(point) }));
+  addedFeatures.push(
+    new Feature({ type: "icon", geometry: new Point(point), label })
+  );
 
   // ADD LINE TO PREVIOUS MARKER
   if (!!previousPoint) {
@@ -30,7 +32,8 @@ const _point2Features = (point?: number[], previousPoint?: number[]) => {
 
 const point2Features = memoize(
   _point2Features,
-  (point, prevPoint) => `${point?.toString()}-${prevPoint?.toString()}}`
+  (point, label, prevPoint) =>
+    `${point?.toString()}-${label}-${prevPoint?.toString()}}`
 );
 
 const _route2Features = (route: number[][]): Feature<Geometry>[] => {
@@ -42,11 +45,21 @@ const _route2Features = (route: number[][]): Feature<Geometry>[] => {
   const oldRoute = [...route];
   const newestPoint = oldRoute.pop();
 
+  if (!newestPoint) {
+    return [];
+  }
+
+  const label = (
+    (oldRoute.length > 0
+      ? route.findIndex((point) => point === oldRoute[oldRoute.length - 1]) + 1
+      : 0) + 1
+  ).toString();
+
   return [
     ...route2Features(oldRoute),
     ...(oldRoute.length > 0
-      ? point2Features(newestPoint, oldRoute[oldRoute.length - 1])
-      : point2Features(newestPoint)),
+      ? point2Features(newestPoint, label, oldRoute[oldRoute.length - 1])
+      : point2Features(newestPoint, label)),
   ];
 };
 
