@@ -15,6 +15,19 @@ function App() {
     setTrack((prevTrack) => [...prevTrack, event.coordinate]);
   }, []);
 
+  const handleDeletion = (deletedId: string) => {
+    setTrack((items) => {
+      const deletedIdIndex = items.findIndex(
+        (point) => point2Id(point) === deletedId
+      );
+
+      return [
+        ...items.slice(0, deletedIdIndex),
+        ...items.slice(deletedIdIndex + 1),
+      ];
+    });
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
@@ -36,7 +49,11 @@ function App() {
     <div className="App">
       <>
         <aside>
-          <SortableList track={track} onDragEnd={handleDragEnd} />
+          <SortableList
+            track={track}
+            onDragEnd={handleDragEnd}
+            onDelete={handleDeletion}
+          />
         </aside>
         <Map onMapClick={onMapClick} track={track} />
       </>

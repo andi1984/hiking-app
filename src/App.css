@@ -1,3 +1,9 @@
+:root {
+  --sidebar-color: #383838;
+
+  --sortlist-button-color: #747474;
+}
+
 html,
 body,
 App {
@@ -32,8 +38,9 @@ aside {
   flex-grow: 0;
   flex-shrink: 1;
 
-  background-color: #383838;
+  background-color: var(--sidebar-color);
   color: white;
+  overflow-y: auto;
 }
 
 .map {
@@ -62,4 +69,41 @@ aside {
   .map {
     flex-basis: 75vw;
   }
+}
+
+/* SortableList */
+.sortlist {
+  list-style: none;
+  padding: 0;
+}
+
+.sortlist__item {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  align-items: center;
+}
+
+.sortlist__item__name {
+  flex: 1 0 auto;
+}
+
+.sortlist__item button {
+  cursor: pointer;
+  flex: 0 0 auto;
+  background-color: var(--sidebar-color);
+  color: var(--sortlist-button-color);
+  border: none;
+  box-shadow: none;
+  font-size: 20px;
+  line-height: 0;
+}
+
+.sortlist__item button:first-child {
+  cursor: move;
+  cursor: grab;
+}
+
+.sortlist__item button svg {
+  fill: currentColor;
 }
