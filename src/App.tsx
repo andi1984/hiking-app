@@ -8,6 +8,8 @@ import { point2Id } from "./helper";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 
+import { toLonLat } from "ol/proj";
+
 function App() {
   const [track, setTrack] = useState<number[][]>([]);
 
@@ -49,11 +51,51 @@ function App() {
     <div className="App">
       <>
         <aside>
+          <h1>Route Builder</h1>
           <SortableList
             track={track}
             onDragEnd={handleDragEnd}
             onDelete={handleDeletion}
           />
+          <button
+            className="gpx-button"
+            disabled={track.length === 0}
+            onClick={() => {
+              const { buildGPX, BaseBuilder } = require("gpx-builder");
+
+              const { Point } = BaseBuilder.MODELS;
+
+              const points = track.map((point) => {
+                const [lon, lat] = toLonLat(point);
+                return new Point(lat, lon);
+              });
+
+              const gpxData = new BaseBuilder();
+
+              gpxData.setSegmentPoints(points);
+
+              var filename = "track.gpx";
+              var pom = document.createElement("a");
+              var bb = new Blob([buildGPX(gpxData.toObject())], {
+                type: "text/plain",
+              });
+
+              pom.setAttribute("href", window.URL.createObjectURL(bb));
+              pom.setAttribute("download", filename);
+
+              pom.dataset.downloadurl = [
+                "text/plain",
+                pom.download,
+                pom.href,
+              ].join(":");
+              pom.draggable = true;
+              pom.classList.add("dragout");
+
+              pom.click();
+            }}
+          >
+            Download your Route
+          </button>
         </aside>
         <Map onMapClick={onMapClick} track={track} />
       </>

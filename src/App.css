@@ -1,7 +1,26 @@
 :root {
-  --sidebar-color: #383838;
+  --sidebar-color: #f5f5f5;
+  --sidebar-bg-color: #383838;
 
   --sortlist-button-color: #747474;
+
+  --ci-color: #c3e451;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-decoration: underline;
+  text-underline-offset: 10px;
 }
 
 html,
@@ -10,6 +29,7 @@ App {
   width: 100vw;
   height: 100vh;
   margin: 0;
+  overflow: hidden;
 }
 
 .App {
@@ -23,8 +43,13 @@ App {
   }
 }
 
+/*******************
+ * Arranging map with aside
+ *******************/
+
 aside {
   order: 1;
+  padding: 10px 20px;
 }
 
 .map,
@@ -33,19 +58,21 @@ aside {
 }
 
 aside {
-  flex-basis: 25vh;
-  background-color: brown;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex-basis: 50vh;
   flex-grow: 0;
   flex-shrink: 1;
 
-  background-color: var(--sidebar-color);
-  color: white;
+  color: var(--sidebar-color);
+  background-color: var(--sidebar-bg-color);
   overflow-y: auto;
 }
 
 .map {
   display: block;
-  flex-basis: 75vh;
+  flex-basis: 50vh;
   height: 0; /* Why do I need this in Chromium-based browsers? Flexbug? */
   flex-grow: 1;
   flex-shrink: 0;
@@ -54,6 +81,13 @@ aside {
 @media screen and (min-width: 800px) {
   aside {
     order: initial;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-basis: 25vh;
+  }
+
+  .map {
+    flex-basis: 75vh;
   }
 
   aside,
@@ -71,32 +105,49 @@ aside {
   }
 }
 
-/* SortableList */
+/*******************
+ * SortList
+ *******************/
+
 .sortlist {
+  display: flex;
+  flex-direction: column;
   list-style: none;
   padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex: 1 1;
+}
+
+@media screen and (min-width: 800px) {
+  .sortlist {
+    flex: 1 1 auto;
+  }
 }
 
 .sortlist__item {
   display: flex;
   flex-direction: row;
-  padding: 10px;
+  padding: 10px 0;
   align-items: center;
 }
 
 .sortlist__item__name {
   flex: 1 0 auto;
+  margin: 0 10px;
 }
 
 .sortlist__item button {
   cursor: pointer;
   flex: 0 0 auto;
-  background-color: var(--sidebar-color);
+  background-color: var(--sidebar-bg-color);
   color: var(--sortlist-button-color);
   border: none;
   box-shadow: none;
   font-size: 20px;
   line-height: 0;
+  padding: 0;
 }
 
 .sortlist__item button:first-child {
@@ -106,4 +157,26 @@ aside {
 
 .sortlist__item button svg {
   fill: currentColor;
+}
+
+/*******************
+ * GPX CTA
+ *******************/
+
+.gpx-button[disabled] {
+  color: black;
+  background-color: #eee;
+  cursor: not-allowed;
+}
+
+.gpx-button {
+  cursor: pointer;
+  background-color: var(--ci-color);
+  color: var(--sidebar-bg-color);
+  border-radius: 5px;
+  padding: 10px 5px;
+  border: none;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
