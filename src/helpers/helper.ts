@@ -57,6 +57,11 @@ const _route2Features = (route: number[][]): Feature<Geometry>[] => {
     return [];
   }
 
+  /* NOTE: The main target here is to find out what the index or waypoint number
+   * this new map point is going to be and set this number as the visible label
+   * of the marker on the map.
+   * TODO: Find a simpler and less costly solution for this by
+   * probably revisiting this helper method and `point2features`. */
   const label = (
     (oldRoute.length > 0
       ? route.findIndex((point) => point === oldRoute[oldRoute.length - 1]) + 1
