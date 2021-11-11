@@ -1,10 +1,8 @@
 :root {
-  --sidebar-color: #f5f5f5;
-  --sidebar-bg-color: #383838;
-
-  --sortlist-button-color: #747474;
-
   --ci-color: #c3e451;
+  --sidebar-primary-color: #f5f5f5;
+  --sidebar-secondary-color: #747474;
+  --sidebar-bg-color: #383838;
 }
 
 *,
@@ -13,14 +11,16 @@
   box-sizing: border-box;
 }
 
+html {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  text-decoration: underline;
-  text-underline-offset: 10px;
 }
 
 html,
@@ -44,20 +44,20 @@ App {
 }
 
 /*******************
- * Arranging map with aside
+ * Arranging map with .sidebar
  *******************/
 
-aside {
+.sidebar {
   order: 1;
   padding: 10px 20px;
 }
 
 .map,
-aside {
+.sidebar {
   width: 100%;
 }
 
-aside {
+.sidebar {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -65,7 +65,7 @@ aside {
   flex-grow: 0;
   flex-shrink: 1;
 
-  color: var(--sidebar-color);
+  color: var(--sidebar-primary-color);
   background-color: var(--sidebar-bg-color);
   overflow-y: auto;
 }
@@ -79,24 +79,25 @@ aside {
 }
 
 @media screen and (min-width: 800px) {
-  aside {
+  .sidebar {
     order: initial;
     flex-direction: column;
     justify-content: space-between;
-    flex-basis: 25vh;
   }
 
-  .map {
-    flex-basis: 75vh;
+  .sidebar__title {
+    margin-bottom: 50px;
+    border-bottom: 3px solid var(--sidebar-secondary-color);
+    padding-bottom: 15px;
   }
 
-  aside,
+  .sidebar,
   .map {
     width: auto;
     height: 100vh;
   }
 
-  aside {
+  .sidebar {
     flex-basis: 25vw;
   }
 
@@ -136,13 +137,14 @@ aside {
 .sortlist__item__name {
   flex: 1 0 auto;
   margin: 0 10px;
+  font-weight: bold;
 }
 
 .sortlist__item button {
   cursor: pointer;
   flex: 0 0 auto;
   background-color: var(--sidebar-bg-color);
-  color: var(--sortlist-button-color);
+  color: var(--sidebar-secondary-color);
   border: none;
   box-shadow: none;
   font-size: 20px;

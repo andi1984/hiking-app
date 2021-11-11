@@ -50,8 +50,8 @@ function App() {
   return (
     <div className="App">
       <>
-        <aside>
-          <h1>Route Builder</h1>
+        <aside className="sidebar">
+          <h1 className="sidebar__title">Route Builder</h1>
           <SortableList
             track={track}
             onDragEnd={handleDragEnd}
