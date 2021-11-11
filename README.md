@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# GPX Route Builder
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Usage
+
+This project is a simple web app that allows you to create a route within a map, rearrange the waypoints, and export the route as a GPX file.
+
+## Software Used
+
+- Create React App
+- [OpenLayers](https://openlayers.org/)
+- [@dnd-kit](https://dndkit.com/)
 
 ## Available Scripts
 
