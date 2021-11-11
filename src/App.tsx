@@ -74,6 +74,7 @@ function App() {
 
               gpxData.setSegmentPoints(points);
 
+              // cf. https://stackoverflow.com/a/24191504/778340
               var filename = "track.gpx";
               var pom = document.createElement("a");
               var bb = new Blob([buildGPX(gpxData.toObject())], {

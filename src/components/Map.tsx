@@ -13,12 +13,10 @@ import { Circle as CircleStyle, Fill, Stroke, Style, Text } from "ol/style";
 import { route2Features } from "../helpers/helper";
 
 /**
- * Find out:
- * - save markers in React state
- * - update the map whenever the markers in the React state are changing
- * - Redraw the lines between the markers (in order!) whenever they change
- * - Idea is having two different vector layers. One for the POI markers and one for the drawing line between them
- **/
+ * vectorLayerStyle is based on OL style functions.
+ *
+ * Based on the feature type we generate the related style.
+ */
 const vectorLayerStyle = (feature: Feature<Geometry>) => {
   const featureType = feature.get("type") as keyof typeof vectorLayerStyle;
 
@@ -56,7 +54,12 @@ const Map: FC<{
   type VectorSourceType = VectorSource<Geometry>;
   let [vectorLayer, setVectorLayer] = useState<VectorLayer<VectorSourceType>>();
 
-  // ON MOUNT
+  /**
+   * Mount:
+   *
+   * 1. Create a new OL Map
+   * 2. Add and save a new vector layer
+   */
   useEffect(() => {
     if (!!mapDOMElement.current) {
       olMap.current = new OpenLayersMap({
@@ -91,7 +94,11 @@ const Map: FC<{
     }
   }, []);
 
-  // onMapClick callback changes
+  /**
+   * onMapClick changes:
+   *
+   * Reset the event listener on the OL map level to the new callback function
+   */
   useEffect(() => {
     // Unlisten potentially old listener
     olMap.current?.un("singleclick", onMapClick);
@@ -100,7 +107,12 @@ const Map: FC<{
     olMap.current?.on("singleclick", onMapClick);
   }, [onMapClick]);
 
-  // ON ROUTE CHANGE
+  /**
+   * On vector layer or track change:
+   *
+   * 1. Compute new vector source features based on the changed track
+   * 2. (Re)set source of the vector layer to the new computed features.
+   */
   const memoizedFeatures = useMemo(() => route2Features(track), [track]);
   useEffect(() => {
     vectorLayer?.setSource(
