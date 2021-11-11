@@ -16,7 +16,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { ReactElement } from "react";
 import { AiOutlineMenu, AiTwotoneDelete } from "react-icons/ai";
 
-import { point2Id } from "../helper";
+import { point2Id } from "../helpers/helper";
 
 const SortableItem = (props: {
   id: string;
@@ -25,13 +25,8 @@ const SortableItem = (props: {
 }) => {
   const { id, onDelete } = props;
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),

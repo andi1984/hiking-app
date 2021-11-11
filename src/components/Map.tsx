@@ -10,7 +10,7 @@ import Geometry from "ol/geom/Geometry";
 import { MapBrowserEvent, Feature } from "ol";
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from "ol/style";
 
-import { route2Features } from "../helper";
+import { route2Features } from "../helpers/helper";
 
 /**
  * Find out:

@@ -4,7 +4,7 @@ import Map from "./components/Map";
 import { useState, useCallback } from "react";
 import SortableList from "./components/SortableList";
 
-import { point2Id } from "./helper";
+import { point2Id } from "./helpers/helper";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 
