@@ -4,6 +4,10 @@ import Geometry from "ol/geom/Geometry";
 import LineString from "ol/geom/LineString";
 import Point from "ol/geom/Point";
 
+/**
+ * Helper method to generate OpenLayer map features for every point/marker the
+ * user adds.
+ */
 const _point2Features = (
   point: number[],
   label: string,
@@ -11,12 +15,13 @@ const _point2Features = (
 ) => {
   let addedFeatures = [];
 
-  // ADD POINT MARKER
+  // We always add the actual marker for the new point added
   addedFeatures.push(
     new Feature({ type: "icon", geometry: new Point(point), label })
   );
 
-  // ADD LINE TO PREVIOUS MARKER
+  // If there is a previous point, we need to add the necessary line/connection
+  // between those two.
   if (!!previousPoint) {
     addedFeatures.push(
       new Feature({
@@ -35,6 +40,10 @@ const point2Features = memoize(
     `${point?.toString()}-${label}-${prevPoint?.toString()}}`
 );
 
+/**
+ * Recursively working helper method to generate a list of geometrical features
+ * based on a given route (list of points).
+ */
 const _route2Features = (route: number[][]): Feature<Geometry>[] => {
   if (route.length === 0) {
     return [];
@@ -64,4 +73,7 @@ const _route2Features = (route: number[][]): Feature<Geometry>[] => {
 
 export const route2Features = memoize(_route2Features);
 
+/**
+ * Generates a unique ID for a given point
+ */
 export const point2Id = (point: number[]) => point.toString();
