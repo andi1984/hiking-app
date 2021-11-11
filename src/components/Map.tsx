@@ -1,14 +1,15 @@
-import { FC, useRef, useEffect, useState, useMemo } from "react";
-import OpenLayersMap from "ol/Map";
-import View from "ol/View";
+import "ol/ol.css";
+
+import { Feature, MapBrowserEvent } from "ol";
+import Geometry from "ol/geom/Geometry";
 import TileLayer from "ol/layer/Tile";
 import VectorLayer from "ol/layer/Vector";
-import XYZ from "ol/source/XYZ";
+import OpenLayersMap from "ol/Map";
 import VectorSource from "ol/source/Vector";
-import Geometry from "ol/geom/Geometry";
-
-import { MapBrowserEvent, Feature } from "ol";
+import XYZ from "ol/source/XYZ";
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from "ol/style";
+import View from "ol/View";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 
 import { route2Features } from "../helpers/helper";
 

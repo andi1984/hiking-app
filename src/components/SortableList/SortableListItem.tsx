@@ -1,7 +1,8 @@
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { ReactElement } from "react";
 import { AiOutlineMenu, AiTwotoneDelete } from "react-icons/ai";
+
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const SortableListItem = (props: {
   id: string;

@@ -1,9 +1,8 @@
+import memoize from "lodash.memoize";
 import Feature from "ol/Feature";
 import Geometry from "ol/geom/Geometry";
-import Point from "ol/geom/Point";
 import LineString from "ol/geom/LineString";
-
-import memoize from "lodash.memoize";
+import Point from "ol/geom/Point";
 
 const _point2Features = (
   point: number[],
