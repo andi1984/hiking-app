@@ -11,7 +11,7 @@ import { Circle as CircleStyle, Fill, Stroke, Style, Text } from "ol/style";
 import View from "ol/View";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 
-import { route2Features } from "../helpers/helper";
+import { generateMapFeatures } from "../helpers/helper";
 
 /**
  * vectorLayerStyle is based on OL style functions.
@@ -114,7 +114,7 @@ const Map: FC<{
    * 1. Compute new vector source features based on the changed track
    * 2. (Re)set source of the vector layer to the new computed features.
    */
-  const memoizedFeatures = useMemo(() => route2Features(track), [track]);
+  const memoizedFeatures = useMemo(() => generateMapFeatures(track), [track]);
   useEffect(() => {
     vectorLayer?.setSource(
       new VectorSource({

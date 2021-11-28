@@ -42,41 +42,41 @@ const point2Features = memoize(
 
 /**
  * Recursively working helper method to generate a list of geometrical features
- * based on a given route (list of points).
+ * based on a given reversed route (list of points).
  */
-const _route2Features = (route: number[][]): Feature<Geometry>[] => {
-  if (route.length === 0) {
+
+export const route2Features = memoize((reverseRoute: number[][], index: number = 0): Feature<Geometry>[] => {
+  if (reverseRoute.length === 0) {
     return [];
   }
 
   // Copy route
-  const oldRoute = [...route];
+  const oldRoute = [...reverseRoute];
   const newestPoint = oldRoute.pop();
 
   if (!newestPoint) {
     return [];
   }
 
-  /* NOTE: The main target here is to find out what the index or waypoint number
-   * this new map point is going to be and set this number as the visible label
-   * of the marker on the map.
-   * TODO: Find a simpler and less costly solution for this by
-   * probably revisiting this helper method and `point2features`. */
-  const label = (
-    (oldRoute.length > 0
-      ? route.findIndex((point) => point === oldRoute[oldRoute.length - 1]) + 1
-      : 0) + 1
-  ).toString();
+  const label = (index + 1).toString();
 
   return [
-    ...route2Features(oldRoute),
+    ...route2Features(oldRoute, index+1),
     ...(oldRoute.length > 0
       ? point2Features(newestPoint, label, oldRoute[oldRoute.length - 1])
       : point2Features(newestPoint, label)),
   ];
+});
+
+
+/**
+* Helper method to generate OpenLayer map features for every point/marker for a given route.
+* Note: Be aware that route2Features expects a reversed route.
+*/
+export const generateMapFeatures = (route: number[][]) => {
+  return route2Features([...route].reverse());
 };
 
-export const route2Features = memoize(_route2Features);
 
 /**
  * Generates a unique ID for a given point
